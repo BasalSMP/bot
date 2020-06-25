@@ -20,9 +20,10 @@ export default class MinecraftAccount {
         return `${apiBases.CRAFATAR}/avatars/${this.uuid}`;
     }
 
-    static async fetch(name: string) {
+    static async fetch(name: string) : Promise<MinecraftAccount | null> {
         const res = await fetch(`${apiBases.MINECRAFT}/users/profiles/minecraft/${name}`);
         const body: MinecraftAccountRes = await res.json();
+        if (!body) return null;
         return new MinecraftAccount(body.name, body.uuid); 
     }
 
