@@ -2,10 +2,12 @@ import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
 import BotClientOptions from './BotClientOptions';
 import { join } from 'path';
 import MinecraftAccount from '../structure/MinecraftAccount';
+import VoteScheduler from '../structure/votes/VoteScheduler';
 
 export default class BotClient extends AkairoClient {
     
     config: BotClientOptions;
+    voteScheduler: VoteScheduler;
     commandHandler: CommandHandler;
     eventListener: ListenerHandler;
     
@@ -20,6 +22,8 @@ export default class BotClient extends AkairoClient {
         )
 
         this.config = config;
+
+        this.voteScheduler = new VoteScheduler(this);
 
         this.commandHandler = new CommandHandler(this, {
             directory: join(__dirname, '..', 'commands'),
@@ -41,5 +45,12 @@ export default class BotClient extends AkairoClient {
         this.commandHandler.loadAll();
         this.eventListener.loadAll();
 
+    }
+}
+
+declare module 'discord-akairo' {
+    interface AkairoClient {
+        config: BotClientOptions;
+        voteScheduler: VoteScheduler;
     }
 }
