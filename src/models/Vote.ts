@@ -14,4 +14,5 @@ class Vote {
     public dateExpired!: Date;
 }
 
-export const VoteModel = getModelForClass(Vote);
+const VoteModel = getModelForClass(Vote);
+export { Vote, VoteModel }
