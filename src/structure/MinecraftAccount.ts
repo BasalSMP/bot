@@ -1,9 +1,15 @@
 import fetch from 'node-fetch';
 import { apiBases } from '../constants/apiBases';
 
-interface MinecraftAccountRes {
+interface UUIDRes {
     name: string;
     uuid: string;
+}
+
+interface ProfileRes {
+    name: string;
+    uuid: string;
+    properties: Array<Object>
 }
 
 export default class MinecraftAccount {
@@ -20,11 +26,18 @@ export default class MinecraftAccount {
         return `${apiBases.CRAFATAR}/avatars/${this.uuid}`;
     }
 
-    static async fetch(name: string) : Promise<MinecraftAccount | null> {
+    static async fetchByName(name: string) : Promise<MinecraftAccount | null> {
         const res = await fetch(`${apiBases.MINECRAFT}/users/profiles/minecraft/${name}`);
-        const body: MinecraftAccountRes = await res.json();
+        const body: UUIDRes = await res.json();
         if (!body) return null;
         return new MinecraftAccount(body.name, body.uuid); 
+    }
+
+    static async fetchByUUID(uuid: string) : Promise<MinecraftAccount | null> {
+        const res = await fetch(`${apiBases.SESSION_SERVER}/session/minecraft/profile/${uuid}`);
+        const body: ProfileRes = await res.json();
+        if (!body) return null;
+        return new MinecraftAccount(body.name, body.uuid);
     }
 
 }
