@@ -17,7 +17,8 @@ export const messages = {
                     .setThumbnail(account.getCrafatar())
                     .setColor('GOLD');
                 return embed;
-            }
+            },
+            successMessage: (account: MinecraftAccount) => `:white_check_mark: Successfully requested **${account.name}** to be whitelisted!`
         }
     }
 }

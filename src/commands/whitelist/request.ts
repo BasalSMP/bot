@@ -14,7 +14,10 @@ export default class RequestWhitelistCommand extends Command {
                 {
                     id: 'minecraftAccount',
                     type: 'minecraftAccount',
-                    prompt: messages.whitelist.request.prompt
+                    prompt: {
+                        start: (msg: Message) => messages.whitelist.request.prompt.start(msg.author),
+                        retry: (msg: Message) => messages.whitelist.request.prompt.retry(msg.author)
+                    }
                 }
             ]
         });
@@ -34,6 +37,7 @@ export default class RequestWhitelistCommand extends Command {
             dateExpired: Date.now() + expirationTimes.DAY_MS
         });
         await entry.save().catch(() => voteMessage.delete());
+        msg.channel.send(messages.whitelist.request.successMessage);
     }
 
 }
