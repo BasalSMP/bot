@@ -37,7 +37,7 @@ export default class RequestWhitelistCommand extends Command {
             dateExpired: Date.now() + expirationTimes.DAY_MS
         });
         await entry.save().catch(() => voteMessage.delete());
-        msg.channel.send(messages.whitelist.request.successMessage);
+        msg.channel.send(messages.whitelist.request.successMessage(minecraftAccount));
     }
 
 }
