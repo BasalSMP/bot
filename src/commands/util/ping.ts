@@ -10,7 +10,7 @@ export default class PingCommand extends Command {
 
     async exec(msg: Message) {
         const res = await msg.channel.send('🕐 Pinging...');
-        res.edit(`✅ **Pong!** Heartbeat: ${this.client.ws.ping}`);
+        res.edit(`✅ **Pong!** Heartbeat: \`${this.client.ws.ping}ms\``);
     }
 
 }
