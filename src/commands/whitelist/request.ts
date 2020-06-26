@@ -1,10 +1,10 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import MinecraftAccount from "../../structure/MinecraftAccount";
-import { messages } from "../../constants/messages";
+import { messages } from "../../constants/guild/messages";
 import { VoteModel } from "../../models/Vote";
 import { expirationTimes } from "../../constants/expirationTimes";
-import { channels } from "../../constants/channels";
+import { channels } from "../../constants/guild/channels";
 
 export default class RequestWhitelistCommand extends Command {
     constructor() {

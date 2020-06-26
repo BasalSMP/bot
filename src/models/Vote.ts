@@ -1,5 +1,5 @@
 import { prop, getModelForClass } from "@typegoose/typegoose";
-import { channels } from "../constants/channels";
+import { channels } from "../constants/guild/channels";
 import BotClient from "../client/BotClient";
 
 class Vote {
