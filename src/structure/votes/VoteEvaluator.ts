@@ -1,8 +1,9 @@
 import { Vote } from "../../models/Vote";
-import { channels } from "../../constants/channels";
+import { channels } from "../../constants/guild/channels";
 import BotClient from "../../client/BotClient";
 import WhitelistAddition from "../whitelist/WhitelistAddition";
 import MinecraftAccount from "../MinecraftAccount";
+import guild from "../../constants/guild/guild";
 
 export default class VoteEvaulator {
     
@@ -24,10 +25,12 @@ export default class VoteEvaulator {
             if (percentVoteYes >= 50) {
                 // 50%+ of people voted yes
                 const minecraftAccount = await MinecraftAccount.fetchByUUID(this.vote.minecraftUser);
-                if (minecraftAccount) {
-                    const whitelistAddition = new WhitelistAddition(this.vote.discordUser, minecraftAccount);
-                    await whitelistAddition.exec();    
-                }
+                if (!minecraftAccount) return;
+                const member = await guild(this.client)?.members.fetch(this.vote.discordUser);
+                if (!member) return;
+                const whitelistAddition = new WhitelistAddition(this.client, member, minecraftAccount);
+                await whitelistAddition.exec();    
+                this.vote.settleVote(this.client);
             } else {
                 // 50%+ of people voted no
                 this.vote.settleVote(this.client);
