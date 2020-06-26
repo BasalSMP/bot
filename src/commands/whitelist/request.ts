@@ -24,7 +24,7 @@ export default class RequestWhitelistCommand extends Command {
     async exec(msg: Message, { minecraftAccount }: { minecraftAccount: MinecraftAccount }) {
         const existingVote = await VoteModel.findOne({ minecraftUser: minecraftAccount.uuid }).exec();
         if (existingVote) return messages.whitelist.request.existingVote;
-        const voteChannel = await this.client.channels.fetch(channels.WHITELIST_REQ) as TextChannel;
+        const voteChannel = await channels.whitelistChannel(this.client);
         const voteMessage = await voteChannel.send(messages.whitelist.request.voteEmbed(minecraftAccount, msg.author));
         await voteMessage.react('✅');
         await voteMessage.react('❌');
