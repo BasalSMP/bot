@@ -3,12 +3,12 @@ import { apiBases } from '../constants/apiBases';
 
 interface UUIDRes {
     name: string;
-    uuid: string;
+    id: string;
 }
 
 interface ProfileRes {
     name: string;
-    uuid: string;
+    id: string;
     properties: Array<Object>
 }
 
@@ -30,14 +30,14 @@ export default class MinecraftAccount {
         const res = await fetch(`${apiBases.MINECRAFT}/users/profiles/minecraft/${name}`);
         const body: UUIDRes = await res.json();
         if (!body) return null;
-        return new MinecraftAccount(body.name, body.uuid); 
+        return new MinecraftAccount(body.name, body.id); 
     }
 
     static async fetchByUUID(uuid: string) : Promise<MinecraftAccount | null> {
         const res = await fetch(`${apiBases.SESSION_SERVER}/session/minecraft/profile/${uuid}`);
         const body: ProfileRes = await res.json();
         if (!body) return null;
-        return new MinecraftAccount(body.name, body.uuid);
+        return new MinecraftAccount(body.name, body.id);
     }
 
 }
