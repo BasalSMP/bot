@@ -52,5 +52,7 @@ declare module 'discord-akairo' {
     interface AkairoClient {
         config: BotClientOptions;
         voteScheduler: VoteScheduler;
+        commandHandler: CommandHandler;
+        eventListener: ListenerHandler;
     }
 }
