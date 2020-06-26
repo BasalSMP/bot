@@ -1,6 +1,6 @@
 import { User } from "discord.js";
 import { MessageEmbed } from "discord.js";
-import MinecraftAccount from "../structure/MinecraftAccount";
+import MinecraftAccount from "../../structure/MinecraftAccount";
 
 export const messages = {
     whitelist: {
