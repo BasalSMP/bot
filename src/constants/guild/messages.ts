@@ -20,5 +20,11 @@ export const messages = {
             },
             successMessage: (account: MinecraftAccount) => `:white_check_mark: Successfully requested **${account.name}** to be whitelisted!`
         }
+    },
+    util: {
+        ping: {
+            pingingMessage: '🕐 Pinging...',
+            pingOutput: (ping: number) => `✅ **Pong!** Heartbeat: \`${ping}ms\``
+        }
     }
 }
