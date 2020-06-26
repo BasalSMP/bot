@@ -1,5 +1,6 @@
-import { prop, getModelForClass } from "@typegoose/typegoose";
+import { prop, getModelForClass, modelOptions } from "@typegoose/typegoose";
 
+@modelOptions({ schemaOptions: { collection: 'whitelistedUsers' } })
 class WhitelistedUser {
     @prop({ required: true })
     public discordUser!: string;

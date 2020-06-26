@@ -1,7 +1,8 @@
-import { prop, getModelForClass } from "@typegoose/typegoose";
+import { prop, getModelForClass, modelOptions } from "@typegoose/typegoose";
 import { channels } from "../constants/guild/channels";
 import BotClient from "../client/BotClient";
 
+@modelOptions({ schemaOptions: { collection: 'votes' } })
 class Vote {
     @prop({ required: true })
     public discordUser!: string;
