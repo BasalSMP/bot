@@ -48,7 +48,6 @@ export default class BotClient extends AkairoClient {
         this.commandHandler.resolver.addType('minecraftAccount', async (msg, phrase) => {
             if (!phrase) return null;
             const account = await MinecraftAccount.fetchByName(phrase);
-            console.log(account);
             if (!account) return null;
             return account;
         });
