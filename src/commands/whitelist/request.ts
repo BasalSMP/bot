@@ -5,7 +5,6 @@ import { messages } from "../../constants/messages";
 import { VoteModel } from "../../models/Vote";
 import { expirationTimes } from "../../constants/expirationTimes";
 import { channels } from "../../constants/channels";
-import { TextChannel } from "discord.js";
 
 export default class RequestWhitelistCommand extends Command {
     constructor() {
