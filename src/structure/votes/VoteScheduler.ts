@@ -1,6 +1,7 @@
 import BotClient from "../../client/BotClient";
 import { Vote, VoteModel } from "../../models/Vote";
 import { expirationTimes } from "../../constants/expirationTimes";
+import VoteEvaulator from "./VoteEvaluator";
 
 export default class VoteScheduler {
     
@@ -19,15 +20,17 @@ export default class VoteScheduler {
         }).exec();
         votesExpiring.forEach(async vote => {
             const timeout = setTimeout(() => {
-                this.expireVote();
+                this.expireVote(vote);
             }, vote.dateExpired.getTime() - Date.now());
             this.timeouts.set(timeout, vote);
         });
         setTimeout(() => this.refresh, expirationTimes.HALF_DAY_MS);
     }
 
-    expireVote() {
-        // TODO: eval vote and make decision to whitelist or not
+    async expireVote(vote: Vote) {
+       // let VoteEvaluator take it from here
+       const voteEvaluator = new VoteEvaulator(this.client, vote);
+       await voteEvaluator.eval();
     }
 
 }
