@@ -1,6 +1,8 @@
 import { Vote } from "../../models/Vote";
 import { channels } from "../../constants/channels";
 import BotClient from "../../client/BotClient";
+import WhitelistAddition from "../whitelist/WhitelistAddition";
+import MinecraftAccount from "../MinecraftAccount";
 
 export default class VoteEvaulator {
     
@@ -21,10 +23,14 @@ export default class VoteEvaulator {
             const percentVoteYes = Math.round((acceptReaction.count! / (acceptReaction.count! + denyReaction.count!)) * 100);
             if (percentVoteYes >= 50) {
                 // 50%+ of people voted yes
-                // TODO: whitelist player and delete vote
+                const minecraftAccount = await MinecraftAccount.fetchByUUID(this.vote.minecraftUser);
+                if (minecraftAccount) {
+                    const whitelistAddition = new WhitelistAddition(this.vote.discordUser, minecraftAccount);
+                    await whitelistAddition.exec();    
+                }
             } else {
                 // 50%+ of people voted no
-                // TODO: simply delete vote
+                this.vote.settleVote(this.client);
             }
         }
     }
