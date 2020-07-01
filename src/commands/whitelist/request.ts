@@ -5,6 +5,7 @@ import { messages } from "../../constants/guild/messages";
 import { VoteModel } from "../../models/Vote";
 import { expirationTimes } from "../../constants/expirationTimes";
 import { channels } from "../../constants/guild/channels";
+import { WhitelistedUserModel } from "../../models/WhitelistedUser";
 
 export default class RequestWhitelistCommand extends Command {
     constructor() {
@@ -25,7 +26,9 @@ export default class RequestWhitelistCommand extends Command {
 
     async exec(msg: Message, { minecraftAccount }: { minecraftAccount: MinecraftAccount }) {
         const existingVote = await VoteModel.findOne({ minecraftUser: minecraftAccount.uuid }).exec();
+        const exitingWhitelist = await WhitelistedUserModel.findOne({ minecraftUser: minecraftAccount.uuid }).exec();
         if (existingVote) return msg.channel.send(messages.whitelist.request.existingVote);
+        if (exitingWhitelist) return msg.channel.send(messages.whitelist.request.exitingWhitelist);
         const voteChannel = await channels.whitelistChannel(this.client);
         const voteMessage = await voteChannel.send(messages.whitelist.request.voteEmbed(minecraftAccount, msg.author));
         await voteMessage.react('✅');

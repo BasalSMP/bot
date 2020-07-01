@@ -9,7 +9,8 @@ export const messages = {
                 start: (author: User) => `${author} who would you like to request?`,
                 retry: (author: User) => `${author} invalid Minecraft username, please try again!`
             },
-            existingVote: ':x: There is already an ongoing vote with that user.',
+            existingVote: '❌ There is already an ongoing vote with that user.',
+            exitingWhitelist: '❌ That user is already whitelisted.',
             voteEmbed: (account: MinecraftAccount, author: User) => {
                 const embed = new MessageEmbed()
                     .setDescription(`${author} is requesting someone to be whitelisted!`)
@@ -18,7 +19,7 @@ export const messages = {
                     .setColor('GOLD');
                 return embed;
             },
-            successMessage: (account: MinecraftAccount) => `:white_check_mark: Successfully requested **${account.name}** to be whitelisted!`
+            successMessage: (account: MinecraftAccount) => `✅ Successfully requested **${account.name}** to be whitelisted!`
         }
     },
     util: {
