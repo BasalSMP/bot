@@ -17,11 +17,10 @@ class Vote {
     public dateExpired!: Date;
 
     public async settleVote(client: BotClient) {
-        const vote = await VoteModel.findOne({ discordMessage: this.discordMessage }).exec();
         const voteChannel = await channels.whitelistChannel(client);
-        const voteMessage = await voteChannel.messages.fetch(this.discordMessage);
-        await voteMessage.delete();
-        await vote?.remove();
+        const voteMessage = voteChannel.messages.resolve(this.discordMessage);
+        if (voteMessage) await voteMessage.delete();
+        await VoteModel.deleteOne({ discordMessage: this.discordMessage }).exec();
     }
 
 }

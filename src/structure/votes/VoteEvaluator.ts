@@ -17,7 +17,8 @@ export default class VoteEvaulator {
 
     async eval() {
         const voteChannel = await channels.whitelistChannel(this.client);
-        const voteMessage = await voteChannel.messages.fetch(this.vote.discordMessage);
+        const voteMessage = voteChannel.messages.resolve(this.vote.discordMessage);
+        if (!voteMessage) return this.vote.settleVote(this.client)
         const acceptReaction = voteMessage.reactions.resolve('✅');
         const denyReaction = voteMessage.reactions.resolve('❌');
         if (acceptReaction && denyReaction) {
