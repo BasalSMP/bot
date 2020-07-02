@@ -3,7 +3,7 @@ import { WhitelistedUserModel } from "../../models/WhitelistedUser";
 import { GuildMember } from "discord.js";
 import { roles } from "../../constants/guild/roles";
 import BotClient from "../../client/BotClient";
-import { redisPubSub } from "../../app";
+import { redisClient } from "../../app";
 import WhitelistAlteration from "./WhitelistAlteration";
 
 export default class WhitelistAddition extends WhitelistAlteration {
@@ -19,7 +19,7 @@ export default class WhitelistAddition extends WhitelistAlteration {
                 minecraftUser: this.minecraftUser.uuid
             });
             await whitelistedUser.save();
-            redisPubSub.publisherClient.publish('whitelistAddition', this.minecraftUser.uuid);
+            redisClient.publish('whitelistAddition', this.minecraftUser.uuid);
             const whitelistedRole = await roles.whitelistedRole(this.client);
             await this.discordUser.roles.add(whitelistedRole!);    
         }
