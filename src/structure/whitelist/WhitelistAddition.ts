@@ -4,34 +4,22 @@ import { GuildMember } from "discord.js";
 import { roles } from "../../constants/guild/roles";
 import BotClient from "../../client/BotClient";
 import { redisPubSub } from "../../app";
+import WhitelistAlteration from "./WhitelistAlteration";
 
-export default class WhitelistAddition {
-
-    client: BotClient;
-    discordUser: GuildMember;
-    minecraftUser: MinecraftAccount;
+export default class WhitelistAddition extends WhitelistAlteration {
 
     constructor(client: BotClient, discordUser: GuildMember, minecraftUser: MinecraftAccount) {
-        this.client = client;
-        this.discordUser = discordUser;
-        this.minecraftUser = minecraftUser;
-    }
-
-    async userAlreadyWhitelisted() {
-        let whitelisted = false;
-        const whitelistedUser = await WhitelistedUserModel.findOne({ minecraftUser: this.minecraftUser.uuid }).exec();
-        if (whitelistedUser) whitelisted = true;
-        return whitelisted;
+        super(client, discordUser, minecraftUser);
     }
 
     async exec() {
-        if (!this.userAlreadyWhitelisted()) {
+        if (!await this.accountWhitelisted()) {
             const whitelistedUser = await WhitelistedUserModel.create({
                 discordUser: this.discordUser.id,
                 minecraftUser: this.minecraftUser.uuid
             });
             await whitelistedUser.save();
-            redisPubSub.publisherClient.publish('whitelistAddition', `${this.minecraftUser.uuid}`);
+            redisPubSub.publisherClient.publish('whitelistAddition', this.minecraftUser.uuid);
             const whitelistedRole = await roles.whitelistedRole(this.client);
             await this.discordUser.roles.add(whitelistedRole!);    
         }
